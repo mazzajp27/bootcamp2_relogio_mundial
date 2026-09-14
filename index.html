@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relógio Mundial</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main class="container">
+    <header>
+      <h1>🕐 Relógio Mundial</h1>
+      <p class="subtitulo">Descubra a hora em qualquer lugar do planeta</p>
+    </header>
+
+    <section class="painel-busca">
+      <div class="campo">
+        <label for="select-cidade">Escolha uma cidade</label>
+        <select id="select-cidade">
+          <option value="">-- selecione --</option>
+          <option value="America/Sao_Paulo">São Paulo, Brasil</option>
+          <option value="America/New_York">Nova York, EUA</option>
+          <option value="Europe/London">Londres, Reino Unido</option>
+          <option value="Europe/Lisbon">Lisboa, Portugal</option>
+          <option value="Europe/Paris">Paris, França</option>
+          <option value="Asia/Tokyo">Tóquio, Japão</option>
+          <option value="Asia/Dubai">Dubai, EAU</option>
+          <option value="Asia/Shanghai">Xangai, China</option>
+          <option value="Australia/Sydney">Sydney, Austrália</option>
+          <option value="Africa/Johannesburg">Joanesburgo, África do Sul</option>
+        </select>
+      </div>
+
+      <div class="separador">ou</div>
+
+      <div class="campo">
+        <label for="input-fuso">Digite um fuso horário IANA</label>
+        <input
+          type="text"
+          id="input-fuso"
+          placeholder="Ex: America/Los_Angeles"
+        />
+      </div>
+
+      <button id="botao-buscar">Ver horário</button>
+    </section>
+
+    <section id="resultado" class="resultado">
+      <p class="dica">Selecione uma cidade acima e clique em "Ver horário".</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Bootcamp II · Etapa 01 · Dados fornecidos pela <a href="https://timeapi.io" target="_blank" rel="noopener">TimeAPI.io</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
