@@ -191,4 +191,29 @@ async function adicionarFavorito(nome, fuso) {
   listarFavoritos();
 }
 
+async function excluirFavorito(id) {
+  const { error } = await supabase.from("favoritos").delete().eq("id", id);
+
+  if (error) {
+    console.error(error);
+    mostrarAviso("Não foi possível remover o favorito.");
+    return;
+  }
+
+  listarFavoritos();
+}
+
+// Um único listener na lista trata os cliques em todos os itens
+listaFavoritos.addEventListener("click", (evento) => {
+  const botaoNome = evento.target.closest(".favorito-nome");
+  const botaoExcluir = evento.target.closest(".favorito-excluir");
+
+  if (botaoNome) {
+    nomeAtual = botaoNome.textContent;
+    buscarHorario(botaoNome.dataset.fuso);
+  } else if (botaoExcluir) {
+    excluirFavorito(botaoExcluir.dataset.id);
+  }
+});
+
 listarFavoritos(); // carrega ao abrir a página
