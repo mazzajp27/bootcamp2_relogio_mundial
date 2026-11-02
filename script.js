@@ -217,3 +217,8 @@ listaFavoritos.addEventListener("click", (evento) => {
 });
 
 listarFavoritos(); // carrega ao abrir a página
+
+
+inputFuso.addEventListener("keydown", (evento) => {
+  if (evento.key === "Enter") botaoBuscar.click();
+});
