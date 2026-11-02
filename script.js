@@ -2,6 +2,12 @@
 // Consome a API pública TimeAPI.io (sem chave, CORS liberado)
 // Documentação: https://timeapi.io
 
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const SUPABASE_URL = "https://cqagbvncyoyzzoakvzbw.supabase.co";
+const SUPABASE_KEY = "sb_publishable_K6pnLwc2OePTcoK-8VkU4g_8UV816_V";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const DIAS_SEMANA_PT = {
   Monday: "Segunda-feira",
   Tuesday: "Terça-feira",
