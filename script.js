@@ -23,6 +23,9 @@ const inputFuso = document.getElementById("input-fuso");
 const botaoBuscar = document.getElementById("botao-buscar");
 const areaResultado = document.getElementById("resultado");
 
+// Nome amigável da busca atual (ex: "Tóquio, Japão"), usado ao favoritar
+let nomeAtual = "";
+
 async function buscarHorario(fuso) {
   areaResultado.innerHTML = `<p class="carregando">Carregando horário de ${fuso}...</p>`;
 
@@ -65,6 +68,14 @@ function exibirResultado(dados) {
       <span class="${classeDst}">${textoDst}</span>
     </div>
   `;
+
+  const botaoFavoritar = document.createElement("button");
+  botaoFavoritar.className = "botao-favoritar";
+  botaoFavoritar.textContent = "⭐ Favoritar";
+  botaoFavoritar.addEventListener("click", () =>
+    adicionarFavorito(nomeAtual || dados.timeZone, dados.timeZone)
+  );
+  areaResultado.querySelector(".cartao-relogio").appendChild(botaoFavoritar);
 }
 
 function exibirErro() {
@@ -89,6 +100,9 @@ botaoBuscar.addEventListener("click", () => {
     return;
   }
 
+  nomeAtual = fusoDigitado
+    ? fusoDigitado
+    : selectCidade.options[selectCidade.selectedIndex].text;
   buscarHorario(fuso);
 });
 
@@ -155,6 +169,26 @@ function renderizarFavoritos(favoritos) {
     li.append(botaoNome, botaoExcluir);
     listaFavoritos.appendChild(li);
   });
+}
+
+async function adicionarFavorito(nome, fuso) {
+  const { error } = await supabase
+    .from("favoritos")
+    .insert({ nome_item: nome, fuso_horario: fuso });
+
+  if (error) {
+    // 23505 = violação de UNIQUE em fuso_horario
+    if (error.code === "23505") {
+      mostrarAviso("Essa cidade já está nos favoritos.");
+    } else {
+      console.error(error);
+      mostrarAviso("Não foi possível salvar o favorito.");
+    }
+    return;
+  }
+
+  mostrarAviso(`${nome} adicionado aos favoritos!`);
+  listarFavoritos();
 }
 
 listarFavoritos(); // carrega ao abrir a página
