@@ -99,3 +99,62 @@ selectCidade.addEventListener("change", () => {
     inputFuso.value = "";
   }
 });
+
+const listaFavoritos = document.getElementById("lista-favoritos");
+const avisoFavoritos = document.getElementById("aviso-favoritos");
+
+function mostrarAviso(texto) {
+  avisoFavoritos.textContent = texto;
+  setTimeout(() => (avisoFavoritos.textContent = ""), 3000);
+}
+
+async function listarFavoritos() {
+  const { data, error } = await supabase
+    .from("favoritos")
+    .select("*")
+    .order("criado_em", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    listaFavoritos.innerHTML = "";
+    const li = document.createElement("li");
+    li.className = "vazio";
+    li.textContent = "Não foi possível carregar os favoritos.";
+    listaFavoritos.appendChild(li);
+    return;
+  }
+  renderizarFavoritos(data);
+}
+
+function renderizarFavoritos(favoritos) {
+  listaFavoritos.innerHTML = "";
+
+  if (favoritos.length === 0) {
+    const li = document.createElement("li");
+    li.className = "vazio";
+    li.textContent = "Nenhum favorito ainda. Busque uma cidade e clique em ⭐ Favoritar.";
+    listaFavoritos.appendChild(li);
+    return;
+  }
+
+  favoritos.forEach((fav) => {
+    const li = document.createElement("li");
+    li.className = "item-favorito";
+
+    const botaoNome = document.createElement("button");
+    botaoNome.className = "favorito-nome";
+    botaoNome.dataset.fuso = fav.fuso_horario;
+    botaoNome.textContent = fav.nome_item;
+
+    const botaoExcluir = document.createElement("button");
+    botaoExcluir.className = "favorito-excluir";
+    botaoExcluir.dataset.id = fav.id;
+    botaoExcluir.title = "Remover dos favoritos";
+    botaoExcluir.textContent = "🗑️";
+
+    li.append(botaoNome, botaoExcluir);
+    listaFavoritos.appendChild(li);
+  });
+}
+
+listarFavoritos(); // carrega ao abrir a página
